@@ -1,0 +1,3 @@
+PDNS_MASTER_DB=pdns_master
+PDNS_MASTER_DB_USER=pdns_master
+PDNS_MASTER_DB_PASS=masterpass

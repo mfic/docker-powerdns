@@ -1,0 +1,3 @@
+PDNSADMIN_DB=pdnsadmin
+PDNSADMIN_DB_USER=pdnsadmin
+PDNSADMIN_DB_PASS=adminpass

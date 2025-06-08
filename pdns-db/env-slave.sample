@@ -1,0 +1,3 @@
+PDNS_SLAVE_DB=pdns_slave
+PDNS_SLAVE_DB_USER=pdns_slave
+PDNS_SLAVE_DB_PASS=slavepass

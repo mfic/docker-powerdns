@@ -4,6 +4,9 @@ services:
     container_name: pdns-mysql
     env_file:
       - .env
+      - .env-admin
+      - .env-master
+      - .env-slave
     volumes:
       - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
       - ./my.cnf:/etc/mysql/conf.d/my.cnf:ro
