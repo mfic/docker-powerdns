@@ -1,0 +1,23 @@
+services:
+  pdns-master:
+    image: powerdns/pdns-auth-47:latest
+    container_name: pdns-master
+    restart: unless-stopped
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+      - "8081:8081"
+    environment:
+      - TZ=Europe/Berlin
+    env_file:
+      - .env
+      - ../pdns-db/.env-master
+    volumes:
+      - ./pdns.d:/etc/powerdns/pdns.d
+    command: ["--config-dir=/etc/powerdns/pdns.d"]
+    networks:
+      - pdns-net
+
+networks:
+  pdns-net:
+    driver: bridge
