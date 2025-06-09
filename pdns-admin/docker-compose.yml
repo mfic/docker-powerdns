@@ -1,0 +1,21 @@
+services:
+  pdnsadmin:
+    image: pschiffe/pdns-admin:latest
+    container_name: pdnsadmin
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=webproxy
+      - traefik.http.routers.pdnsadmin.rule=Host(`${PDNS_ADMIN_DOMAIN}`)
+      - traefik.http.routers.pdnsadmin.entrypoints=websecure
+      - traefik.http.routers.pdnsadmin.tls.certresolver=cloudflare
+      - traefik.http.services.pdnsadmin.loadbalancer.server.port=8080
+    networks:
+      - webproxy
+      - pdns
+
+networks:
+  webproxy:
+    external: true
+  pdns:
+    external: true

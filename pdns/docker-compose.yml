@@ -20,30 +20,13 @@ services:
       - traefik.http.services.pdns.loadbalancer.server.port=8081
     networks:
       - webproxy
-      - default
-
-  pdnsadmin:
-    image: pschiffe/pdns-admin:latest
-    container_name: pdnsadmin
-    restart: unless-stopped
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=webproxy
-      - traefik.http.routers.pdnsadmin.rule=Host(`${PDNS_ADMIN_DOMAIN}`)
-      - traefik.http.routers.pdnsadmin.entrypoints=websecure
-      - traefik.http.routers.pdnsadmin.tls.certresolver=cloudflare
-      - traefik.http.services.pdnsadmin.loadbalancer.server.port=8080
-    networks:
-      - webproxy
-      - default
-    depends_on:
       - pdns
 
   pdns-schema-init:
     image: mysql:9
     command: >
       sh -c "
-      mysql -h ${PDNS_DB_HOST} -u${PDNS_DB_USER} -p${PDNS_DB_PASS} ${PDNS_DB_NAME} < /schema/schema.mysql.sql"
+      mysql -h ${PDNS_gmysql_host} -u${PDNS_gmysql_user} -p${PDNS_gmysql_password} ${PDNS_gmysql_dbname} < /schema/schema.mysql.sql"
     volumes:
       - ./config/schema.mysql.sql:/schema/schema.mysql.sql:ro
     depends_on:
@@ -52,4 +35,6 @@ services:
 
 networks:
   webproxy:
+    external: true
+  pdns:
     external: true
