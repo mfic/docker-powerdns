@@ -9,7 +9,7 @@ services:
     environment:
       TZ: Europe/Berlin
     volumes:
-      - ./config/pdns.conf:/etc/pdns/pdns.conf:ro
+      - ./config/pdns.conf:/pdns.conf:ro
       - ./config/pdns.d:/etc/pdns/pdns.d:ro
     labels:
       - traefik.enable=true
