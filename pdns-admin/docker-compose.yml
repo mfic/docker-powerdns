@@ -6,6 +6,10 @@ services:
     env_file:
       - .env
       - ../pdns-db/.env-admin
+    environment:
+      PDNS_DB_NAME: ${PDNSADMIN_DB}
+      PDNS_DB_USERNAME: ${PDNSADMIN_DB_USER}
+      PDNS_DB_PASSWORD: ${PDNSADMIN_DB_PASS}
     volumes:
       - ./uploads:/app/uploads
     labels:
@@ -17,7 +21,10 @@ services:
       - traefik.http.services.pdnsadmin.loadbalancer.server.port=80
     networks:
       - webproxy
+      - pdns-net
 
 networks:
   webproxy:
     external: true
+  pdns-net:
+    driver: bridge
