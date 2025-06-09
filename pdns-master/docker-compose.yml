@@ -12,15 +12,17 @@ services:
       PDNS_api: "yes"
       PDNS_api-key: "${PDNS_API_KEY}"
       PDNS_webserver: "yes"
-      PDNS_webserver-address: "0.0.0.0"
+      PDNS_webserver_address: "0.0.0.0"
       # gmysql backend
-      PDNS_LAUNCH: ${PDNS_LAUNCH}
-      PDNS_DB_HOST: ${PDNS_DB_HOST}
-      PDNS_gmysql-host: "${PDNS_DB_HOST}"
-      PDNS_gmysql-port: "${PDNS_DB_PORT}"
-      PDNS_gmysql-user: "${PDNS_DB_USER}"
-      PDNS_gmysql-password: "${PDNS_DB_PASS}"
-      PDNS_gmysql-dbname: "${PDNS_DB_NAME}"
+      PDNS_launch: ${PDNS_LAUNCH}
+      PDNS_gmysql_host: "${PDNS_DB_HOST}"
+      PDNS_gmysql_port: "${PDNS_DB_PORT}"
+      PDNS_gmysql_user: "${PDNS_DB_USER}"
+      PDNS_gmysql_password: "${PDNS_DB_PASS}"
+      PDNS_gmysql_dbname: "${PDNS_DB_NAME}"
+      PDNS_gmysql_group: ""
+    volumes:
+      - ./config/my.cnf:/etc/mysql/my.cnf:ro
     labels:
       - traefik.enable=true
       - traefik.docker.network=webproxy
