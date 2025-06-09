@@ -20,6 +20,16 @@ services:
       - traefik.http.services.pdns-master.loadbalancer.server.port=8081
     networks:
       - webproxy
+  pdns-schema-init:
+    image: mysql:8
+    command: >
+      sh -c "
+      mysql -h pdns-mysql -u${PDNS_MASTER_DB_USER} -p${PDNS_MASTER_DB_PASS} ${PDNS_MASTER_DB} < /schema/schema.mysql.sql"
+    volumes:
+      - ./config/schema.mysql.sql:/schema/schema.mysql.sql:ro
+    depends_on:
+      - pdns-mysql
+    restart: "no"
 
 networks:
   webproxy:
