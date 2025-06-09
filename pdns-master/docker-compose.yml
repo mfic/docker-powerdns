@@ -20,7 +20,6 @@ services:
       - traefik.http.routers.pdns-master.entrypoints=websecure
       - traefik.http.routers.pdns-master.tls.certresolver=cloudflare
       - traefik.http.services.pdns-master.loadbalancer.server.port=8081
-    command: ["--config-dir=/etc/powerdns/pdns.d"]
     networks:
       - webproxy
 
