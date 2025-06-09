@@ -2,3 +2,4 @@
 .env-admin
 .env-master
 .env-slave
+init.sql
