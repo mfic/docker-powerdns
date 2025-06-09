@@ -6,7 +6,6 @@ services:
     ports:
       - "53:53/udp"
       - "53:53/tcp"
-      - "8081:8081"
     environment:
       - TZ=Europe/Berlin
     env_file:
@@ -15,10 +14,17 @@ services:
     volumes:
       - ./config/pdns.conf:/etc/powerdns/pdns.conf:ro
       - ./config/pdns.d/:/etc/powerdns/pdns.d/:ro
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=webproxy
+      - traefik.http.routers.pdns-master.rule=Host(`${PDNS_MASTER_DOMAIN}`)
+      - traefik.http.routers.pdns-master.entrypoints=websecure
+      - traefik.http.routers.pdns-master.tls.certresolver=cloudflare
+      - traefik.http.services.pdns-master.loadbalancer.server.port=8081
     command: ["--config-dir=/etc/powerdns/pdns.d"]
     networks:
-      - pdns-net
+      - webproxy
 
 networks:
-  pdns-net:
-    driver: bridge
+  webproxy:
+    external: true

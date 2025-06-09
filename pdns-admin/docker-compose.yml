@@ -28,10 +28,7 @@ services:
       - ./upload:/opt/powerdns-admin/upload
     networks:
       - webproxy
-      - pdns-net
 
 networks:
   webproxy:
     external: true
-  pdns-net:
-    driver: bridge

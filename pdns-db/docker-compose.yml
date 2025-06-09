@@ -15,12 +15,5 @@ services:
     restart: unless-stopped
     ports:
       - "3306:3306"
-    networks:
-      - pdnsnet
-
 volumes:
   db_data:
-
-networks:
-  pdnsnet:
-    driver: bridge
