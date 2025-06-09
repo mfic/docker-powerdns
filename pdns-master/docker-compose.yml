@@ -13,7 +13,8 @@ services:
       - .env
       - ../pdns-db/.env-master
     volumes:
-      - ./pdns.d:/etc/powerdns/pdns.d
+      - ./config/pdns.conf:/etc/powerdns/pdns.conf:ro
+      - ./config/pdns.d/:/etc/powerdns/pdns.d/:ro
     command: ["--config-dir=/etc/powerdns/pdns.d"]
     networks:
       - pdns-net
