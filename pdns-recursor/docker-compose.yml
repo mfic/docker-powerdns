@@ -1,0 +1,27 @@
+services:
+  pdns-recursor:
+    image: pschiffe/pdns-recursor:latest
+    container_name: pdns-recursor
+    env_file:
+      - .env
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    restart: unless-stopped
+    depends_on:
+      - pdns
+    networks:
+      dockervlan:
+        ipv4_address: ${PDNSR_RECURSOR_VLAN_IP}
+
+networks:
+  dockervlan:
+    name: dpns-recursor
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: ${PDNSR_RECURSOR_VLAN_SUBNET}
+          ip_range: ${PDNSR_RECURSOR_VLAN_IP}/32
+          gateway: ${PDNSR_RECURSOR_VLAN_GATEWAY}
