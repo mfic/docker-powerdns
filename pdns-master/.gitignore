@@ -1,1 +1,3 @@
 .env
+config/pdns.d/*
+!config/pdns.d/pdns.conf
