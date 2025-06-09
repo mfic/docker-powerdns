@@ -1,45 +1,152 @@
-# PowerDNS MySQL Initialization
+# 🚀 PowerDNS Multi-Node Docker Setup (Authoritative + Recursor + Admin UI)
 
-## 🗂️ Overview
+This repository provides a modular, production-ready Docker Compose setup for running a multi-node **PowerDNS authoritative DNS** infrastructure with:
 
-This folder contains the setup for the MySQL service used by PowerDNS and PowerDNS-Admin. It defines multiple databases and users for a split configuration: `pdns`, `pdnsadmin`, `pdns_master`, and `pdns_slave`.
+* **Primary and Secondary PowerDNS servers**
+* **Recursor for DNS resolution**
+* **PowerDNS-Admin UI**
+* **MySQL backend**
+* **Traefik reverse proxy support**
 
-## 📁 Files
-
-* `init.sql.template`: Template SQL script with placeholders for environment variables.
-* `.env`: Define sensitive values like passwords and database names.
-* `generate-init.sh`: Script to render `init.sql` from the template.
-* `docker-compose.yml`: Launches the MySQL container with volume bindings.
-
-## 🚀 Usage
-
-### 1. Prepare the environment
-
-Copy the `.env.sample` to `.env` and customize your credentials:
-
-```bash
-cp .env.sample .env
-```
-
-### 2. Generate `init.sql`
-
-Run the provided script to render your SQL file:
-
-```bash
-chmod +x generate-init.sh
-./generate-init.sh
-```
-
-This will substitute all variables from `.env` into `init.sql.template`, outputting `init.sql`.
-
-### 3. Start the MySQL container
-
-```bash
-docker compose up -d
-```
-
-This will initialize the MySQL container and apply the `init.sql` during first-time setup.
+> ⚙️ This setup is still in development but intended for **production deployment**.
 
 ---
 
-✅ Make sure to **gitignore `.env`** to avoid committing secrets.
+## 📦 Project Structure
+
+```
+docker-powerdns-main/
+├── pdns/            # Authoritative DNS server
+├── pdns-db/         # MySQL backend for PowerDNS and PowerDNS-Admin
+├── pdns-admin/      # PowerDNS-Admin UI
+└── pdns-recursor/   # PowerDNS Recursor setup
+```
+
+---
+
+## 🔧 Services Overview
+
+### 🔸 pdns/
+
+* Authoritative PowerDNS server using MySQL backend
+* Schema initialization included
+
+### 🔸 pdns-db/
+
+* MySQL container with support for multiple databases:
+
+  * `pdns`, `pdnsadmin`, `pdns_master`, `pdns_slave`
+* Contains `init.sql.template` and `generate-init.sh` for setup
+
+### 🔸 pdns-admin/
+
+* UI for managing zones, records, users
+* Secured via Traefik and `.env` for credentials
+
+### 🔸 pdns-recursor/
+
+* DNS resolver with forwarding and custom rules
+* Configurable via `.env` variables
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone and Prepare Environment
+
+```bash
+git clone https://your-repo-url/docker-powerdns-main.git
+cd docker-powerdns-main
+```
+
+### 2. Configure Environment Variables
+
+Each service has a `.env.sample`. Copy and edit each:
+
+```bash
+cp pdns/.env.sample pdns/.env
+cp pdns-db/.env.sample pdns-db/.env
+cp pdns-db/env-admin.sample pdns-db/env-admin.env
+cp pdns-db/env-master.sample pdns-db/env-master.env
+cp pdns-admin/.env.sample pdns-admin/.env
+cp pdns-recursor/.env.sample pdns-recursor/.env
+```
+
+Edit the `.env` files to match your database credentials, domain names, and Traefik labels.
+
+---
+
+### 3. Generate Initial SQL for MySQL
+
+Inside `pdns-db/`:
+
+```bash
+cd pdns-db
+bash generate-init.sh
+```
+
+This will generate a `init.sql` file from the `init.sql.template` using the values in your `.env` file.
+
+---
+
+### 4. Start Containers
+
+You can start each service independently on different nodes depending on your topology. Example for the primary node:
+
+```bash
+cd pdns-db
+docker compose up -d
+
+cd ../pdns
+docker compose up -d
+
+cd ../pdns-recursor
+docker compose up -d
+
+cd ../pdns-admin
+docker compose up -d
+```
+
+---
+
+## 🌐 Traefik Integration
+
+This project is designed to work with [Traefik](https://traefik.io/) as a reverse proxy. Each `docker-compose.yml` includes labels for Traefik routing.
+
+To enable:
+
+* Ensure your Traefik instance is running on the Docker network used by the services
+* Match the `traefik.enable=true` labels and hostname routes
+* Use a shared Docker network (e.g., `traefik-public`) and attach containers to it
+
+---
+
+## ✅ Recommended Deployment Topology
+
+| Node       | Services                                         |
+| ---------- | ------------------------------------------------ |
+| DNS Master | `pdns-db`, `pdns`, `pdns-admin`                  |
+| DNS Slave  | `pdns-db`, `pdns` (slave), optional `pdns-admin` |
+| Recursor   | `pdns-recursor`                                  |
+| Proxy      | `traefik` reverse proxy                          |
+
+---
+
+## ☑️ To Do / Improvements
+
+* Harden authentication and SSL
+* Enable mTLS or Cloudflare Access
+* Add backup automation
+* Health monitoring (Prometheus/Grafana)
+
+---
+
+## 📜 License
+
+MIT License – Feel free to use and contribute.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please open issues or submit PRs for improvements.
