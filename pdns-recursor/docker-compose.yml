@@ -8,8 +8,6 @@ services:
       - "53:53/udp"
       - "53:53/tcp"
     restart: unless-stopped
-    depends_on:
-      - pdns
     networks:
       dockervlan:
         ipv4_address: ${PDNSR_RECURSOR_VLAN_IP}
