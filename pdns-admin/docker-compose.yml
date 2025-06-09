@@ -1,6 +1,6 @@
 services:
   pdnsadmin:
-    image: pschiffe/pdns-admin-uwsgi:latest
+    image: pschiffe/pdns-admin:latest
     container_name: pdnsadmin
     restart: unless-stopped
     env_file:
@@ -15,6 +15,8 @@ services:
       PDNS_ADMIN_SQLA_DB_NAME: ${PDNSADMIN_DB}
       PDNS_API_URL: http://${PDNS_MASTER_HOST}:8081/
       PDNS_API_KEY: ${PDNS_API_KEY}
+      SSL_MAIN_DOMAIN: ${PDNSADMIN_DOMAIN}
+      STRICT_HTTPS: "true"
     labels:
       - traefik.enable=true
       - traefik.docker.network=webproxy
@@ -22,9 +24,10 @@ services:
       - traefik.http.routers.pdnsadmin.entrypoints=websecure
       - traefik.http.routers.pdnsadmin.tls.certresolver=cloudflare
       - traefik.http.services.pdnsadmin.loadbalancer.server.port=80
+    volumes:
+      - ./upload:/opt/powerdns-admin/upload
     networks:
       - webproxy
-
       - pdns-net
 
 networks:
