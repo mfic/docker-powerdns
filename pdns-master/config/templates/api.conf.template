@@ -1,0 +1,12 @@
+# Enable the HTTP API
+api=yes
+api-key=${PDNS_API_KEY}
+
+# Webserver config
+webserver=yes
+webserver-address=0.0.0.0
+webserver-allow-from=0.0.0.0/0
+
+# Optional logging
+log-dns-queries=no
+loglevel=4
