@@ -36,7 +36,7 @@ services:
       - default
 
   pdns-recursor:
-    image: pschiffe/pdns-recursor
+    image: pschiffe/pdns-recursor:latest
     container_name: pdns-recursor
     ports:
       - "53:53/udp"
@@ -51,13 +51,13 @@ services:
         ipv4_address: ${PDNS_RECURSOR_VLAN_IP}
 
   pdnsadmin:
-    image: pschiffe/pdns-admin:alpine
+    image: pschiffe/pdns-admin:latest
     container_name: pdnsadmin
     restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.docker.network=webproxy
-      - traefik.http.routers.pdnsadmin.rule=Host(`${PDNSADMIN_DOMAIN}`)
+      - traefik.http.routers.pdnsadmin.rule=Host(`${PDNS_ADMIN_DOMAIN}`)
       - traefik.http.routers.pdnsadmin.entrypoints=websecure
       - traefik.http.routers.pdnsadmin.tls.certresolver=cloudflare
       - traefik.http.services.pdnsadmin.loadbalancer.server.port=8080
@@ -89,5 +89,5 @@ networks:
     ipam:
       config:
         - subnet: ${PDNS_RECURSOR_VLAN_SUBNET}
-          ip_range: ${PDNS_RECURSOR_VLAN_IP}
+          ip_range: ${PDNS_RECURSOR_VLAN_IP}/32
           gateway: ${PDNS_RECURSOR_VLAN_GATEWAY}
