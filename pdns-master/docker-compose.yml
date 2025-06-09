@@ -28,7 +28,7 @@ services:
     volumes:
       - ./config/schema.mysql.sql:/schema/schema.mysql.sql:ro
     depends_on:
-      - pdns-mysql
+      - pdns-master
     restart: "no"
 
 networks:
