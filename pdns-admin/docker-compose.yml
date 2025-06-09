@@ -4,18 +4,17 @@ services:
     container_name: pdnsadmin
     restart: unless-stopped
     env_file:
-      - .env
-      - ../pdns-db/.env-admin
-      - ../pdns-master/.env
+      - path: .env
+      - path: ../pdns-db/.env-admin
+      - path: ../pdns-master/.env
     environment:
       PDNS_ADMIN_SQLA_DB_HOST: ${PDNS_DB_HOST}
       PDNS_ADMIN_SQLA_DB_PORT: ${PDNS_DB_PORT}
       PDNS_ADMIN_SQLA_DB_USER: ${PDNSADMIN_DB_USER}
       PDNS_ADMIN_SQLA_DB_PASSWORD: ${PDNSADMIN_DB_PASS}
       PDNS_ADMIN_SQLA_DB_NAME: ${PDNSADMIN_DB}
-      PDNS_API_URL: http://${PDNS_MASTER_HOST}:8081/
+      PDNS_API_URL: http://${PDNS_MASTER_DOMAIN}:8081/
       PDNS_API_KEY: ${PDNS_API_KEY}
-      SSL_MAIN_DOMAIN: ${PDNSADMIN_DOMAIN}
       STRICT_HTTPS: "true"
     labels:
       - traefik.enable=true

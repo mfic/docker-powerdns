@@ -9,8 +9,8 @@ services:
     environment:
       - TZ=Europe/Berlin
     env_file:
-      - .env
-      - ../pdns-db/.env-master
+      - path: .env
+      - path: ../pdns-db/.env-master
     volumes:
       - ./config/pdns.conf:/etc/powerdns/pdns.conf:ro
       - ./config/pdns.d/:/etc/powerdns/pdns.d/:ro
