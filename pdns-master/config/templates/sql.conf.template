@@ -1,6 +1,0 @@
-launch=gmysql
-gmysql-host=${PDNS_DB_HOST}
-gmysql-port=${PDNS_DB_PORT}
-gmysql-user=${PDNS_DB_USER}
-gmysql-password=${PDNS_DB_PASS}
-gmysql-dbname=${PDNS_DB}

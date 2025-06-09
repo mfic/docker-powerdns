@@ -3,13 +3,9 @@ services:
     image: pschiffe/pdns-admin:latest
     container_name: pdnsadmin
     restart: unless-stopped
-    env_file:
-      - path: .env
-      - path: ../pdns-db/.env-admin
-      - path: ../pdns-master/.env
     environment:
-      PDNS_ADMIN_SQLA_DB_HOST: ${PDNS_DB_HOST}
-      PDNS_ADMIN_SQLA_DB_PORT: ${PDNS_DB_PORT}
+      PDNS_ADMIN_SQLA_DB_HOST: ${PDNSADMIN_DB_HOST}
+      PDNS_ADMIN_SQLA_DB_PORT: ${PDNSADMIN_DB_PORT}
       PDNS_ADMIN_SQLA_DB_USER: ${PDNSADMIN_DB_USER}
       PDNS_ADMIN_SQLA_DB_PASSWORD: ${PDNSADMIN_DB_PASS}
       PDNS_ADMIN_SQLA_DB_NAME: ${PDNSADMIN_DB}
