@@ -13,7 +13,7 @@ services:
       PDNS_ADMIN_SQLA_DB_USER: ${PDNSADMIN_DB_USER}
       PDNS_ADMIN_SQLA_DB_PASSWORD: ${PDNSADMIN_DB_PASS}
       PDNS_ADMIN_SQLA_DB_NAME: ${PDNSADMIN_DB}
-      PDNS_API_URL: http://${PDNS_MASTER_DOMAIN}:8081/
+      PDNS_API_URL: https://${PDNS_MASTER_DOMAIN}/
       PDNS_API_KEY: ${PDNS_API_KEY}
       STRICT_HTTPS: "true"
     labels:
@@ -22,7 +22,7 @@ services:
       - traefik.http.routers.pdnsadmin.rule=Host(`${PDNSADMIN_DOMAIN}`)
       - traefik.http.routers.pdnsadmin.entrypoints=websecure
       - traefik.http.routers.pdnsadmin.tls.certresolver=cloudflare
-      - traefik.http.services.pdnsadmin.loadbalancer.server.port=80
+      - traefik.http.services.pdnsadmin.loadbalancer.server.port=8080
     volumes:
       - ./upload:/opt/powerdns-admin/upload
     networks:
