@@ -24,7 +24,7 @@ services:
     image: mysql:9
     command: >
       sh -c "
-      mysql -h pdns-mysql -u${PDNS_DB_USER} -p${PDNS_DB_PASS} ${PDNSR_DB_NAME} < /schema/schema.mysql.sql"
+      mysql -h pdns-mysql -u${PDNS_DB_USER} -p${PDNS_DB_PASS} ${PDNS_DB_NAME} < /schema/schema.mysql.sql"
     volumes:
       - ./config/schema.mysql.sql:/schema/schema.mysql.sql:ro
     depends_on:
