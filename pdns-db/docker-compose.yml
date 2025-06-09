@@ -2,6 +2,8 @@ services:
   db:
     image: mysql:9
     container_name: pdns-mysql
+    env_file:
+      - .env
     volumes:
       - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
       - ./my.cnf:/etc/mysql/conf.d/my.cnf:ro
