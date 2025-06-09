@@ -5,5 +5,5 @@ set -e
 export $(grep -v '^#' .env | xargs)
 
 # Generate sql.conf
-envsubst <./config/templates/pdns.d/sql.conf.template >./config/pdns.d/sql.conf
-envsubst <./config/templates/pdns.d/api.conf.template >./config/pdns.d/api.conf
+envsubst <./config/templates/sql.conf.template >./config/pdns.d/sql.conf
+envsubst <./config/templates/api.conf.template >./config/pdns.d/api.conf
