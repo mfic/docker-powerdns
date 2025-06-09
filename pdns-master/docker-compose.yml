@@ -1,18 +1,25 @@
 services:
   pdns-master:
-    image: powerdns/pdns-auth-47:latest
+    image: pschiffe/pdns-mysql:latest
     container_name: pdns-master
     restart: unless-stopped
     ports:
       - "53:53/udp"
       - "53:53/tcp"
-    environment:
-      - TZ=Europe/Berlin
     env_file:
       - path: .env
-    volumes:
-      - ./config/pdns.conf:/etc/powerdns/pdns.conf:ro
-      - ./pdns.d/:/etc/powerdns/pdns.d/:ro
+      - path: ../pdns-db/.env-master
+    environment:
+      TZ: Europe/Berlin
+      PDNS_api: "yes"
+      PDNS_api-key: "${PDNS_API_KEY}"
+      PDNS_webserver: "yes"
+      PDNS_webserver-address: "0.0.0.0"
+      PDNS_gmysql-host: "${PDNS_DB_HOST}"
+      PDNS_gmysql-port: "${PDNS_DB_PORT}"
+      PDNS_gmysql-user: "${PDNS_DB_USER}"
+      PDNS_gmysql-password: "${PDNS_DB_PASS}"
+      PDNS_gmysql-dbname: "${PDNS_DB}"
     labels:
       - traefik.enable=true
       - traefik.docker.network=webproxy
