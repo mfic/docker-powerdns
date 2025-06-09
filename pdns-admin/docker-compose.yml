@@ -1,17 +1,20 @@
 services:
   pdnsadmin:
-    image: ngoduykhanh/powerdns-admin:latest
+    image: pschiffe/pdns-admin-uwsgi:latest
     container_name: pdnsadmin
     restart: unless-stopped
     env_file:
       - .env
       - ../pdns-db/.env-admin
+      - ../pdns-master/.env
     environment:
-      PDNS_DB_NAME: ${PDNSADMIN_DB}
-      PDNS_DB_USERNAME: ${PDNSADMIN_DB_USER}
-      PDNS_DB_PASSWORD: ${PDNSADMIN_DB_PASS}
-    volumes:
-      - ./uploads:/app/uploads
+      PDNS_ADMIN_SQLA_DB_HOST: ${PDNS_DB_HOST}
+      PDNS_ADMIN_SQLA_DB_PORT: ${PDNS_DB_PORT}
+      PDNS_ADMIN_SQLA_DB_USER: ${PDNSADMIN_DB_USER}
+      PDNS_ADMIN_SQLA_DB_PASSWORD: ${PDNSADMIN_DB_PASS}
+      PDNS_ADMIN_SQLA_DB_NAME: ${PDNSADMIN_DB}
+      PDNS_API_URL: http://${PDNS_MASTER_HOST}:8081/
+      PDNS_API_KEY: ${PDNS_API_KEY}
     labels:
       - traefik.enable=true
       - traefik.docker.network=webproxy
@@ -21,6 +24,7 @@ services:
       - traefik.http.services.pdnsadmin.loadbalancer.server.port=80
     networks:
       - webproxy
+
       - pdns-net
 
 networks:
