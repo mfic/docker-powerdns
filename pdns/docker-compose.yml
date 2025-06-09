@@ -16,16 +16,11 @@ services:
 
   pdns-schema-init:
     image: mysql:9
-    command: >
-      sh -c '
-      echo "Waiting for MySQL to be ready...";
-      until mysql -h ${PDNS_gmysql_host} -u${PDNS_gmysql_user} -p${PDNS_gmysql_password} -e "SELECT 1" ${PDNS_gmysql_dbname}; do
-        echo "MySQL not ready, waiting...";
-        sleep 2;
-      done;
-      echo "MySQL is ready. Importing schema...";
-      mysql -h ${PDNS_gmysql_host} -u${PDNS_gmysql_user} -p${PDNS_gmysql_password} ${PDNS_gmysql_dbname} < /schema/schema.mysql.sql'
+    command: sh /init/init-schema.sh
+    env_file:
+      - .env
     volumes:
+      - ./config/init-schema.sh:/init/init-schema.sh:ro
       - ./config/schema.mysql.sql:/schema/schema.mysql.sql:ro
     depends_on:
       - pdns
