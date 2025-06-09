@@ -25,7 +25,7 @@ api.conf
 "
 
 for file in $CONFIGS; do
-    template="./config/templates/pdns.d/${file}.template"
+    template="./config/templates/${file}.template"
     target="./config/pdns.d/${file}"
 
     if [ -f "$template" ]; then
