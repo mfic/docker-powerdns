@@ -5,7 +5,7 @@ TEMPLATE_FILE="init.sql.template"
 OUTPUT_FILE="init.sql"
 
 # Combine all env files
-ENV_FILES=".env .env-master .env-admin .env-slave"
+ENV_FILES=".env .env-master .env-admin"
 
 echo "🔧 Loading env files:"
 for file in $ENV_FILES; do
