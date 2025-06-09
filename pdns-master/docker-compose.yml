@@ -1,6 +1,6 @@
 services:
   pdns-master:
-    image: pschiffe/pdns-mysql:latest
+    image: pschiffe/pdns-mysql:alpine
     container_name: pdns-master
     restart: unless-stopped
     ports:
