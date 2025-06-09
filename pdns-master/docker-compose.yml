@@ -8,15 +8,9 @@ services:
       - "53:53/tcp"
     environment:
       TZ: Europe/Berlin
-      PDNS_api: "yes"
-      PDNS_api-key: "${PDNS_API_KEY}"
-      PDNS_webserver: "yes"
-      PDNS_webserver-address: "0.0.0.0"
-      PDNS_gmysql-host: "${PDNS_DB_HOST}"
-      PDNS_gmysql-port: "${PDNS_DB_PORT}"
-      PDNS_gmysql-user: "${PDNS_DB_USER}"
-      PDNS_gmysql-password: "${PDNS_DB_PASS}"
-      PDNS_gmysql-dbname: "${PDNS_DB}"
+    volumes:
+      - ./config/pdns.conf:/etc/pdns/pdns.conf:ro
+      - ./config/pdns.d:/etc/pdns/pdns.d:ro
     labels:
       - traefik.enable=true
       - traefik.docker.network=webproxy
