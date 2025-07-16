@@ -1,0 +1,21 @@
+incoming:
+  listen:
+    - 0.0.0.0:53
+    - '[::]:53'
+
+recursor:
+  forward_zones:
+    - zone: qn.questnet.eu
+      forwarders:
+        - 10.1.25.11
+    - zone: .
+      forwarders:
+        - 1.1.1.2
+        - 1.0.0.2
+  extended_resolution_errors: true
+
+logging:
+  structured_logging: true
+  structured_logging_backend: stdout
+  loglevel: 6
+
