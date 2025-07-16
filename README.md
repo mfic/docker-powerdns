@@ -48,6 +48,12 @@ docker-powerdns-main/
 * DNS resolver with forwarding and custom rules
 * Configurable via `.env` variables
 
+> Make sure to disable systemd-resolved on the host prior to starting the container
+
+>  ```
+>  systemctl disable systemd-resovled
+>  ```
+
 ---
 
 ## 🚀 Getting Started
